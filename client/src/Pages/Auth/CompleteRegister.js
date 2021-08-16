@@ -7,10 +7,29 @@ const CompleteRegister = ({ history }) => {
 	const [ password, setPassword ] = useState('');
 	useEffect(() => {
 		setEmail(window.localStorage.getItem('emailForRegistration'));
+		console.log(window.location.href);
 	}, []);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		if (!email || !password) {
+			toast.error('NO EMAIL OR PASSWORD!');
+			return;
+		}
+		if (password.length < 6) {
+			toast.error('the length of password must be greater than 6 digits!');
+			return;
+		}
+		try {
+			const result = await auth.signInWithEmailLink(email, window.location.href);
+			if (result.user.emailVerfied) {
+				window.localStorage.removeItem('emailForRegistration');
+				let user = auth.currentUser;
+				await user.updatePassword(password);
+				const idUserToken = await user.getIdTokenResult();
+			}
+			history.push('/');
+		} catch (error) {}
 	};
 
 	const registerFormComplete = () => (
