@@ -1,0 +1,22 @@
+.grid-container {
+    margin: auto;
+  }
+  
+  .grid {
+    white-space: pre;
+  }
+  
+  button {
+    margin: 2px;
+   
+  }
+  .buttons{
+    text-align: center;
+    padding: 20px 0px;
+    background-color: #1A374D;
+
+  }
+  .btn{
+    background-color: #406882;
+  }
+  

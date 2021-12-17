@@ -1,34 +1,60 @@
 import React, { useState } from 'react';
-import { Menu } from 'antd';
-import { MailOutlined, HomeOutlined, SettingOutlined, UserOutlined, UserAddOutlined } from '@ant-design/icons';
+import {useDispatch} from "react-redux"
+import {useHistory} from "react-router-dom";
+import firebase from "firebase"
+import { Menu,Switch} from 'antd';
+import { MailOutlined, HomeOutlined, SettingOutlined, UserOutlined, UserAddOutlined, CloseOutlined, CheckOutlined,ShareAltOutlined,FileUnknownOutlined  } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import i18n from '../../118n'
+import { useTranslation } from 'react-i18next'
+import "./header.css";
+const { SubMenu, Item,MenuItem, Dropdown, Button, Space } = Menu;
 
-const { SubMenu, Item } = Menu;
 
 function Header() {
-	const [ state, setState ] = useState('home');
+	let dispatch=useDispatch();
+	let history=useHistory();
+	const {t}=useTranslation();
+const [ state, setState ] = useState('home');
 	const handleClick = (e) => {
 		console.log(e.key);
 	};
 
+	const handleLanguageChange = lang => {
+		i18n.changeLanguage(lang)
+	  }
+	 
+
 	return (
+		<div >
+		
+		
 		<Menu mode="horizontal" onClick={handleClick}>
-			<Item key="home" icon={<HomeOutlined />}>
-				<Link to="/">home</Link>
+	
+		<Item key="home" icon={<ShareAltOutlined />} >
+		<Link to="/">{t('navbar.home')}
+		</Link>
+	</Item>
+			
+		
+			
+			
+			
+			<Item key="Login" icon={<FileUnknownOutlined />} >
+				<Link to="/documentation">{t('navbar.documentation')}</Link>
 			</Item>
-			<Item key="Register" icon={<UserAddOutlined />}>
-				<Link to="/Register">Register</Link>
+			<Item>	{ <div className="margin-to:5px">
+			<Switch  onClick={()=>handleLanguageChange(t("language"))} checkedChildren={t("langText")} unCheckedChildren={t("langText")} />
+	  </div> }
 			</Item>
-			<Item key="Login" icon={<UserOutlined />} style={{ float: 'right' }}>
-				<Link to="/Login">Login</Link>
-			</Item>
-			<SubMenu key="SubMenu" icon={<SettingOutlined />} title="username">
-				<Menu.ItemGroup title="Item 1">
-					<Menu.Item key="setting:1">Option 1</Menu.Item>
-					<Menu.Item key="setting:2">Option 2</Menu.Item>
-				</Menu.ItemGroup>
-			</SubMenu>
+		
+	
+		
 		</Menu>
+		
+		  
+		  
+		</div>
 	);
 }
 export default Header;
